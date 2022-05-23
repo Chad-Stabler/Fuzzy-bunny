@@ -16,13 +16,14 @@ export async function getFamilies() {
 }
 
 export async function deleteBunny(id) {
-    const response = await client.from('bunnies').delete().eq('id', id);
+    const response = await client.from('fuzzy_bunnies').delete().eq('id', id);
     // delete a single bunny using the id argument
 
     return checkError(response);
 }
 
 export async function createBunny(bunny) {
+    const response = await client.from('fuzzy_bunnies').insert(bunny);
     // create a bunny using the bunny argument
 
     return checkError(response);
