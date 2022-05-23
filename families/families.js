@@ -9,12 +9,36 @@ logoutButton.addEventListener('click', () => {
     logout();
 });
 
-function displayFamilies() {
+async function displayFamilies() {
+    const families = await getFamilies();
     // fetch families from supabase
-
+    familiesEl.textContent = '';
     // clear out the familiesEl
 
     for (let family of families) {
+        const familyDiv = document.createElement('div');
+        const familyName = document.createElement('h3');
+        const bunniesDiv = document.createElement('div');
+        
+        familyDiv.classList.add('family');
+        bunniesDiv.classList.add('bunnies');
+        
+        for (let bunny of family.fuzzy_bunnies) {
+            const bunnyDiv = document.createElement('div');
+            bunnyDiv.classList.add('bunny');
+            bunnyDiv.textContent = bunny.name;
+            bunniesDiv.append(bunnyDiv);
+            bunnyDiv.addEventListener('click', async () => {
+                await deleteBunny(bunny.id);
+                displayFamilies();
+            });
+        }
+        familyName.textContent = family.name;
+
+        familyDiv.append(familyName, bunniesDiv);
+        familiesEl.append(familyDiv);
+
+
         // create three elements for each family, one for the whole family, one to hold the name, and one to hold the bunnies
         // your HTML Element should look like this:
         // <div class="family">
